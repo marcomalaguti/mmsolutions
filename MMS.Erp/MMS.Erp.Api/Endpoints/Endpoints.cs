@@ -1,5 +1,10 @@
 ﻿namespace MMS.Erp.Api.Endpoints;
 
-public class Endpoints
+public static class Endpoints
 {
+    public static void MapEndpoints(this IEndpointRouteBuilder route)
+    {
+        route.MapHealthCheckEndpoint();
+        route.MapInvoiceEndpoint();
+    }
 }

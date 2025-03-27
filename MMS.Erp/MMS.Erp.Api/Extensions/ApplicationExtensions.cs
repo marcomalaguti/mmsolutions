@@ -1,5 +1,7 @@
-﻿using MMS.Erp.Application;
+﻿using MMS.Erp.Api.Endpoints;
+using MMS.Erp.Application;
 using MMS.Erp.Infrastructure;
+using Serilog;
 
 namespace MMS.Erp.Api.Extensions;
 
@@ -11,7 +13,13 @@ public static class ApplicationExtensions
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddApplication();
-        builder.Services.AddInfrastrucure();
+        builder.Services.AddInfrastrucure(builder.Configuration);
+
+        builder.Host.UseSerilog((context, configuration) =>
+        {
+            configuration.ReadFrom.Configuration(context.Configuration);
+        });
+
         return builder;
     }
 
@@ -23,15 +31,12 @@ public static class ApplicationExtensions
             app.UseSwaggerUI();
         }
 
+        app.UseSerilogRequestLogging();
+
         app.UseHttpsRedirection();
 
-        app.RegisterEndpoints();
+        app.MapEndpoints();
 
         return app;
-    }
-
-    private static void RegisterEndpoints(this IEndpointRouteBuilder route)
-    {
-
     }
 }
