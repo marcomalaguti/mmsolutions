@@ -9,5 +9,6 @@ internal static class InvoiceEndpoints
         var group = route.MapGroup("/invoices");
 
         group.MapGet("/", InvoiceHandler.GetAllInvoices);
+        group.MapPost("/", InvoiceHandler.CreateInvoice);
     }
 }

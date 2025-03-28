@@ -24,4 +24,8 @@
     <ProjectReference Include="..\MMS.Erp.Domain\MMS.Erp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

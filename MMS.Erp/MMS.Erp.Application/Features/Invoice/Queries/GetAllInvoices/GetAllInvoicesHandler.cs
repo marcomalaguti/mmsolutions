@@ -14,7 +14,7 @@ internal class GetAllInvoicesHandler(IInvoiceRepository invoiceRepository) : IRe
     {
         var invoices = await invoiceRepository.GetAllAsync();
 
-        var ret = InvoiceMapper.InvoiceListToInvoiceDtoList(invoices);
+        var ret = InvoiceMapper.MapToInvoiceDtoList(invoices);
 
         return ret;
     }
