@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MMS.Erp.Domain.Entities;
+using MMS.Erp.Domain.AggregateRoots;
 using MMS.Erp.Domain.Repositories;
 
 namespace MMS.Erp.Infrastructure.Repositories;

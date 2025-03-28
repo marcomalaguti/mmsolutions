@@ -6,20 +6,20 @@ using MMS.Erp.Api.Mappings;
 using MMS.Erp.Api.Requests;
 using MMS.Erp.Application.Features.Invoice.Queries.GetAllInvoices;
 
-public static class InvoiceHandler
+public static class CustomerHandler
 {
-    const string BaseUrl = "/invoices";
+    const string BaseUrl = "/customers";
 
-    internal static async Task<IResult> CreateInvoice([FromServices] IMediator mediator, CreateInvoiceRequest request)
+    internal static async Task<IResult> CreateCustomer([FromServices] IMediator mediator, CreateCustomerRequest request)
     {
-        var command = InvoiceMapper.MapToCreateInvoiceCommand(request);
+        var command = CustomerMapper.MapToCreateCustomerCommand(request);
         var result = await mediator.Send(command);
         return TypedResults.Created($"{BaseUrl}/{result}");
     }
 
-    internal static async Task<IResult> GetAllInvoices([FromServices] IMediator mediator)
+    internal static async Task<IResult> GetAllCustomers([FromServices] IMediator mediator)
     {
         var result = await mediator.Send(new GetAllInvoicesQuery());
-        return TypedResults.Ok(result);
+        return TypedResults.Ok();
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace MMS.Erp.Domain.Entities;
+﻿namespace MMS.Erp.Domain.AggregateRoots;
 
 using MMS.Erp.Domain.Primitives;
 
-public class Invoice : Entity
+public class Invoice : AggregateRoot
 {
-    public required string Code { get; set; }
+    public string Code { get; set; }
     public DateTime InvoiceDate { get; set; } = DateTime.Now;
     public int CustomerId { get; set; }
     public decimal Amount { get; set; }
@@ -12,10 +12,7 @@ public class Invoice : Entity
     public decimal DutyStamp { get; set; } = 2;
     public bool IsPaid { get; set; } = false;
 
-    public Invoice()
-    {
-
-    }
+    public Customer Customer { get; set; }
 
     private Invoice(string code,
                    DateTime invoiceDate,

@@ -1,7 +1,7 @@
 ﻿namespace MMS.Erp.Application.Features.Invoice.Commands.CreateInvoice;
 
 using MediatR;
-using MMS.Erp.Domain.Entities;
+using MMS.Erp.Domain.AggregateRoots;
 using MMS.Erp.Domain.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +21,7 @@ internal class CreateInvoiceHandler(IInvoiceRepository invoiceRepository,
                                             request.DutyStamp ? 2 : 0);
 
         await invoiceRepository.AddAsync(invoice);
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return invoice.Id;
     }

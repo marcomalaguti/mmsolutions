@@ -1,7 +1,7 @@
 ﻿namespace MMS.Erp.Application.Mappings;
 
 using MMS.Erp.Application.DTOs;
-using MMS.Erp.Domain.Entities;
+using MMS.Erp.Domain.AggregateRoots;
 using Riok.Mapperly.Abstractions;
 
 

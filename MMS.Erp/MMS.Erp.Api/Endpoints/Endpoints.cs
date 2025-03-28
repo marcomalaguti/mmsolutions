@@ -5,6 +5,7 @@ public static class Endpoints
     public static void MapEndpoints(this IEndpointRouteBuilder route)
     {
         route.MapHealthCheckEndpoint();
-        route.MapInvoiceEndpoint();
+        route.MapInvoiceEndpoints();
+        route.MapCustomerEndpoints();
     }
 }
