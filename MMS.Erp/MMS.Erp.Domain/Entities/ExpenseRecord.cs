@@ -1,6 +1,4 @@
 ﻿namespace MMS.Erp.Domain.Entities;
-
-using MMS.Erp.Domain.AggregateRoots;
 using MMS.Erp.Domain.Enums;
 using MMS.Erp.Domain.Primitives;
 

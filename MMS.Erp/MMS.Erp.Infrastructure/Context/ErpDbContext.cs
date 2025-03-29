@@ -19,34 +19,54 @@ public sealed class ErpDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        //Invoice
+
         modelBuilder.Entity<Invoice>()
             .HasOne(i => i.Customer)
             .WithMany(c => c.Invoices)
             .HasForeignKey(i => i.CustomerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<ExpenseReport>()
-            .HasMany(r => r.ExpenseRecords)
-            .WithOne(e => e.ExpenseReport)
-            .HasForeignKey(e => e.ExpenseReportId)
-            .OnDelete(DeleteBehavior.Cascade);
+        //Expense Report
 
         modelBuilder.Entity<ExpenseReport>()
-            .HasOne(r => r.Employee)
+           .HasMany(er => er.ExpenseRecords)
+           .WithOne(er => er.ExpenseReport)
+           .HasForeignKey(er => er.ExpenseReportId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ExpenseReport>()
+            .HasOne<Employee>()
             .WithMany(e => e.ExpenseReports)
-            .HasForeignKey(r => r.EmployeeId)
+            .HasForeignKey(er => er.EmployeeId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        //Employee
+
+        modelBuilder.Entity<Employee>()
+            .HasMany(e => e.ExpenseReports)
+            .WithOne()
+            .HasForeignKey(er => er.EmployeeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Employee>()
+            .Property(e => e.FirstName)
+            .HasMaxLength(100);
+
+        modelBuilder.Entity<Employee>()
+            .Property(e => e.LastName)
+            .HasMaxLength(100);
+
+        modelBuilder.Entity<Employee>()
+            .Property(e => e.FiscalCode)
+            .HasMaxLength(16);
+        
         modelBuilder.Entity<ExpenseRecord>()
             .HasOne(er => er.ExpenseReport)
             .WithMany(er => er.ExpenseRecords)
             .HasForeignKey(er => er.ExpenseReportId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Employee>()
-            .HasMany(e => e.ExpenseReports)
-            .WithOne(er => er.Employee)
-            .HasForeignKey(er => er.EmployeeId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ErpDbContext).Assembly);

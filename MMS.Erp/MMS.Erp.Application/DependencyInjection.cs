@@ -1,8 +1,7 @@
 ﻿
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using MMS.Erp.Application.Behaviors;
+using MMS.Erp.Application.Mediator.Behaviors;
 using System.Reflection;
 
 namespace MMS.Erp.Application;
@@ -22,8 +21,6 @@ public static class DependencyInjection
         services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
-        //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;
     }
