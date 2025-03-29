@@ -5,12 +5,12 @@ using System.Linq.Expressions;
 
 namespace MMS.Erp.Infrastructure.Repositories;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public class GenericCommandRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly ErpDbContext _context;
     protected readonly DbSet<T> _dbSet;
 
-    public GenericRepository(ErpDbContext context)
+    public GenericCommandRepository(ErpDbContext context)
     {
         _context = context;
         _dbSet = context.Set<T>();

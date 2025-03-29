@@ -4,7 +4,7 @@ using MMS.Erp.Domain.Repositories.Customer;
 
 namespace MMS.Erp.Infrastructure.Repositories.Customer;
 
-public sealed class CustomerCommandsRepository : GenericRepository<MMS.Erp.Domain.AggregateRoots.Customer>, ICustomerCommandsRepository
+public sealed class CustomerCommandsRepository : GenericCommandRepository<MMS.Erp.Domain.AggregateRoots.Customer>, ICustomerCommandsRepository
 {
 
     public CustomerCommandsRepository(ErpDbContext context) : base(context) { }

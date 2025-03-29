@@ -20,6 +20,6 @@ public static class EmployeeHandler
     internal static async Task<IResult> GetAllEmployees([FromServices] IMediator mediator)
     {
         var result = await mediator.Send(new GetAllEmployeesQuery());
-        return TypedResults.Ok();
+        return TypedResults.Ok(result);
     }
 }

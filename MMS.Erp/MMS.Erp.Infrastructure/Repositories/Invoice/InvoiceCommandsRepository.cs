@@ -4,7 +4,7 @@ using MMS.Erp.Domain.Repositories.Invoice;
 
 namespace MMS.Erp.Infrastructure.Repositories.Invoice;
 
-public sealed class InvoiceCommandsRepository : GenericRepository<MMS.Erp.Domain.AggregateRoots.Invoice>, IInvoiceCommandsRepository
+public sealed class InvoiceCommandsRepository : GenericCommandRepository<MMS.Erp.Domain.AggregateRoots.Invoice>, IInvoiceCommandsRepository
 {
 
     public InvoiceCommandsRepository(ErpDbContext context) : base(context) { }
