@@ -2,7 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MMS.Erp.Domain.Repositories;
+using MMS.Erp.Domain.Repositories.Customer;
+using MMS.Erp.Domain.Repositories.Employee;
+using MMS.Erp.Domain.Repositories.Invoice;
 using MMS.Erp.Infrastructure.Repositories;
+using MMS.Erp.Infrastructure.Repositories.Customer;
+using MMS.Erp.Infrastructure.Repositories.Employee;
+using MMS.Erp.Infrastructure.Repositories.Invoice;
 
 namespace MMS.Erp.Infrastructure;
 
@@ -31,9 +37,10 @@ public static class DependencyInjection
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IInvoiceCommandsRepository, InvoiceCommandsRepository>();
+        services.AddScoped<ICustomerCommandsRepository, CustomerCommandsRepository>();
+        services.AddScoped<IEmployeeCommandsRepository, EmployeeCommandsRepository>();
+        services.AddScoped<IEmployeeQueriesRepository, EmployeeQueriesRepository>();
 
         return services;
     }

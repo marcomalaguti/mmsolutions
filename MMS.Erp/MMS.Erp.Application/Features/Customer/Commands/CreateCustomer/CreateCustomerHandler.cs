@@ -3,8 +3,9 @@
 using MediatR;
 using MMS.Erp.Domain.AggregateRoots;
 using MMS.Erp.Domain.Repositories;
+using MMS.Erp.Domain.Repositories.Customer;
 
-internal class CreateCustomerHandler(ICustomerRepository customerRepository,
+internal class CreateCustomerHandler(ICustomerCommandsRepository customerRepository,
                                      IUnitOfWork unitOfWork) : IRequestHandler<CreateCustomerCommand, int>
 {
     public async Task<int> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)

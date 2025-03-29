@@ -3,11 +3,13 @@
 using MediatR;
 using MMS.Erp.Domain.AggregateRoots;
 using MMS.Erp.Domain.Repositories;
+using MMS.Erp.Domain.Repositories.Customer;
+using MMS.Erp.Domain.Repositories.Invoice;
 using System.Threading;
 using System.Threading.Tasks;
 
-internal class CreateInvoiceHandler(IInvoiceRepository invoiceRepository,
-                                    ICustomerRepository customerRepository,
+internal class CreateInvoiceHandler(IInvoiceCommandsRepository invoiceRepository,
+                                    ICustomerCommandsRepository customerRepository,
                                     IUnitOfWork unitOfWork) : IRequestHandler<CreateInvoiceCommand, int>
 {
     public async Task<int> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
