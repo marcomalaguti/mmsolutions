@@ -7,15 +7,18 @@ using System.Threading;
 using System.Threading.Tasks;
 
 internal class CreateInvoiceHandler(IInvoiceRepository invoiceRepository,
+                                    ICustomerRepository customerRepository,
                                     IUnitOfWork unitOfWork) : IRequestHandler<CreateInvoiceCommand, int>
 {
     public async Task<int> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
     {
+        var customer = await customerRepository.GetByIdAsync(request.CustomerId) ?? throw new ArgumentNullException(nameof(Customer));
+
         string code = $"FPR {request.SequenceNumber}/{DateTime.Now.ToString("yy")}";
 
         var invoice = Invoice.CreateInvoice(code,
                                             request.InvoiceDate,
-                                            request.CustomerId,
+                                            customer,
                                             request.Amount,
                                             request.VAT,
                                             request.DutyStamp ? 2 : 0);

@@ -5,16 +5,15 @@ using MMS.Erp.Domain.Primitives;
 
 public class Customer : AggregateRoot
 {
-    public string? Name { get; set; }
-    public string? Email { get; set; }
-    public string? Phone { get; set; }
-    public CountryEnum CountryId { get; set; }
-    public string? City { get; set; }
-    public string? Address { get; set; }
-    public string? VatNumber { get; set; }
+    public string? Name { get; private set; }
+    public string? Email { get; private set; }
+    public string? Phone { get; private set; }
+    public CountryEnum CountryId { get; private set; }
+    public string? City { get; private set; }
+    public string? Address { get; private set; }
+    public string? VatNumber { get; private set; }
 
-    public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
-
+    public ICollection<Invoice> Invoices { get; private set; } = new List<Invoice>();
 
     public Customer()
     {
