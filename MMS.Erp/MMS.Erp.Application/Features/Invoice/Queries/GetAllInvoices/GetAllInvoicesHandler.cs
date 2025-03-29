@@ -1,21 +1,22 @@
 ﻿namespace MMS.Erp.Application.Features.Invoice.Queries.GetAllInvoices;
 
-using MediatR;
 using MMS.Erp.Application.DTOs;
-using MMS.Erp.Application.Mappings;
-using MMS.Erp.Domain.Repositories.Invoice;
+using MMS.Erp.Application.Mediator.Messaging;
+using MMS.Erp.Domain.Abstractions;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-internal class GetAllInvoicesHandler(IInvoiceCommandsRepository invoiceRepository) : IRequestHandler<GetAllInvoicesQuery, IEnumerable<InvoiceDto>>
+internal class GetAllInvoicesHandler : IQueryHandler<GetAllInvoicesQuery, IEnumerable<InvoiceDto>>
 {
-    public async Task<IEnumerable<InvoiceDto>> Handle(GetAllInvoicesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<InvoiceDto>>> Handle(GetAllInvoicesQuery request, CancellationToken cancellationToken)
     {
-        var invoices = await invoiceRepository.GetAllAsync();
+        //var invoices = await invoiceRepository.GetAllAsync();
 
-        var ret = InvoiceMapper.MapToInvoiceDtoList(invoices);
+        //var ret = InvoiceMapper.MapToInvoiceDtoList(invoices);
 
-        return ret;
+        //return ret;
+
+        throw new NotImplementedException();
     }
 }

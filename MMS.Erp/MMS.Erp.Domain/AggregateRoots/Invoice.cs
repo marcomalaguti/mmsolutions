@@ -1,5 +1,7 @@
 ﻿namespace MMS.Erp.Domain.AggregateRoots;
 
+using MMS.Erp.Domain.Abstractions;
+using MMS.Erp.Domain.Errors;
 using MMS.Erp.Domain.Primitives;
 
 #pragma warning disable CS8618
@@ -41,7 +43,7 @@ public class Invoice : AggregateRoot
     {
         Code = code;
         InvoiceDate = invoiceDate;
-        Customer = customer ?? throw new ArgumentNullException(nameof(customer));
+        Customer = customer;
         CustomerId = customer.Id;
         Amount = amount;
         VAT = vat;
@@ -49,22 +51,23 @@ public class Invoice : AggregateRoot
         Customer = customer;
     }
 
-    public static Invoice CreateInvoice(string code,
+    public static Result<Invoice> Create(string code,
                                        DateTime invoiceDate,
                                        Customer customer,
                                        decimal amount,
                                        int vat,
                                        decimal dutyStamp = 2)
     {
-        if (customer == null)
-            throw new ArgumentNullException(nameof(customer));
+        if (customer is null)
+            Result<Invoice>.Failure(CustomerErrors.CustomerNotFound);
 
         var invoice = new Invoice(code,
                                   invoiceDate,
-                                  customer,
+                                  customer!,
                                   amount,
                                   vat,
                                   dutyStamp);
-        return invoice;
+
+        return Result<Invoice>.Success(invoice);
     }
 }

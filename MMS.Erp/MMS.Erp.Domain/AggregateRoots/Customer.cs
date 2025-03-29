@@ -1,11 +1,13 @@
 ﻿namespace MMS.Erp.Domain.AggregateRoots;
 
+using MMS.Erp.Domain.Abstractions;
 using MMS.Erp.Domain.Enums;
+using MMS.Erp.Domain.Errors;
 using MMS.Erp.Domain.Primitives;
 
 public class Customer : AggregateRoot
 {
-    public string? Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
     public string? Email { get; private set; }
     public string? Phone { get; private set; }
     public CountryEnum CountryId { get; private set; }
@@ -21,11 +23,11 @@ public class Customer : AggregateRoot
     }
 
     private Customer(string name,
-                     string email,
-                     string phone,
+                     string? email,
+                     string? phone,
                      CountryEnum countryId,
-                     string city,
-                     string address,
+                     string? city,
+                     string? address,
                      string vatNumber)
     {
         Name = name;
@@ -37,7 +39,7 @@ public class Customer : AggregateRoot
         VatNumber = vatNumber;
     }
 
-    public static Customer Create(string? name,
+    public static Result<Customer> Create(string? name,
                                   string? email,
                                   string? phone,
                                   CountryEnum countryId,
@@ -45,13 +47,14 @@ public class Customer : AggregateRoot
                                   string? address,
                                   string? vatNumber)
     {
-        var customer = new Customer(name!,
-                                    email!,
-                                    phone!,
-                                    countryId,
-                                    city!,
-                                    address!,
-                                    vatNumber!);
-        return customer;
+        if (string.IsNullOrWhiteSpace(name))
+            return Result<Customer>.Failure(CustomerErrors.InvalidName);
+
+        if (string.IsNullOrWhiteSpace(vatNumber))
+            return Result<Customer>.Failure(CustomerErrors.VatNumberNotEmpty);
+
+        var customer = new Customer(name, email, phone, countryId, city, address, vatNumber);
+
+        return Result<Customer>.Success(customer);  
     }
 }

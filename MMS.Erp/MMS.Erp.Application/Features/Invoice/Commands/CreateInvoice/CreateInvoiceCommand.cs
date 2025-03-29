@@ -1,9 +1,10 @@
 ﻿namespace MMS.Erp.Application.Features.Invoice.Commands.CreateInvoice;
 
 using MediatR;
+using MMS.Erp.Application.Mediator.Messaging;
 using System;
 
-public class CreateInvoiceCommand : IRequest<int>
+public class CreateInvoiceCommand : ICommand<int>
 {
     public int SequenceNumber { get; set; }
     public DateTime InvoiceDate { get; set; } = DateTime.Now;

@@ -1,19 +1,22 @@
 ﻿namespace MMS.Erp.Application.Features.ExpenseReport.Commands.CreateExpenseReport;
 
-using MediatR;
+using MMS.Erp.Application.Mediator.Messaging;
+using MMS.Erp.Domain.Abstractions;
+using MMS.Erp.Domain.Errors;
 using MMS.Erp.Domain.Repositories;
 using MMS.Erp.Domain.Repositories.Employee;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 internal class CreateExpenseReportHandler(IEmployeeCommandsRepository employeeRepository,
-                                          IUnitOfWork unitOfWork) : IRequestHandler<CreateExpenseReportCommand, int>
+                                          IUnitOfWork unitOfWork) : ICommandHandler<CreateExpenseReportCommand, int>
 {
-    public async Task<int> Handle(CreateExpenseReportCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateExpenseReportCommand request, CancellationToken cancellationToken)
     {
-        var employee = await employeeRepository.GetByIdAsync(request.EmployeeId)
-            ?? throw new ArgumentNullException(nameof(Employee));
+        var employee = await employeeRepository.GetByIdAsync(request.EmployeeId);
+
+        if (employee == null)
+            return Result<int>.Failure(ExpenseReportErrors.EmployeeNotFound);
 
         employee.AddNewExpenseReport();
 
@@ -22,6 +25,7 @@ internal class CreateExpenseReportHandler(IEmployeeCommandsRepository employeeRe
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         var expenseReportId = employee.ExpenseReports.Last().Id;
-        return expenseReportId;
+
+        return Result<int>.Success(expenseReportId);
     }
 }

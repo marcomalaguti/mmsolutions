@@ -1,9 +1,10 @@
 ﻿namespace MMS.Erp.Application.Features.Customer.Commands.CreateCustomer;
 
 using MediatR;
+using MMS.Erp.Application.Mediator.Messaging;
 using MMS.Erp.Domain.Enums;
 
-public class CreateCustomerCommand : IRequest<int>
+public class CreateCustomerCommand : ICommand<int>
 {
     public string? Name { get; set; }
     public string? Email { get; set; }
