@@ -1,5 +1,8 @@
 ﻿namespace MMS.Erp.Domain.AggregateRoots;
+
+using MMS.Erp.Domain.Abstractions;
 using MMS.Erp.Domain.Entities;
+using MMS.Erp.Domain.Errors;
 using MMS.Erp.Domain.Primitives;
 
 public class Employee : AggregateRoot
@@ -21,14 +24,14 @@ public class Employee : AggregateRoot
         FiscalCode = fiscalCode;
     }
 
-    public static Employee CreateEmployee(string firstName, string lastName, string fiscalCode)
+    public static Result<Employee> CreateEmployee(string firstName, string lastName, string fiscalCode)
     {
         if (string.IsNullOrWhiteSpace(firstName))
-            throw new ArgumentException("First name cannot be empty", nameof(firstName));
+            return Result<Employee>.Failure(EmployeeErrors.FirstNameNotEmpty);
         if (string.IsNullOrWhiteSpace(lastName))
-            throw new ArgumentException("Last name cannot be empty", nameof(lastName));
+            return Result<Employee>.Failure(EmployeeErrors.LastNameNotEmpty);
         if (string.IsNullOrWhiteSpace(fiscalCode))
-            throw new ArgumentException("Fiscal Code cannot be empty", nameof(fiscalCode));
+            return Result<Employee>.Failure(EmployeeErrors.FiscalCodeNotEmpty);
 
         firstName = firstName.Trim();
         firstName = char.ToUpper(firstName[0]) + firstName.Substring(1);
@@ -38,7 +41,9 @@ public class Employee : AggregateRoot
 
         fiscalCode = fiscalCode.Trim().ToUpper();
 
-        return new Employee(firstName, lastName, fiscalCode);
+        var employee = new Employee(firstName, lastName, fiscalCode);
+
+        return Result<Employee>.Success(employee);
     }
 
     internal void SetExpenseReports(List<ExpenseReport> expenseReports)

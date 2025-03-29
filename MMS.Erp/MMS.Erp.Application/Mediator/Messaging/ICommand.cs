@@ -1,12 +1,12 @@
 ﻿namespace MMS.Erp.Application.Mediator.Messaging;
 
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MMS.Erp.Domain.Abstractions;
 
-internal interface ICommand : IRequest
+public interface ICommand : IRequest<Result>
+{
+}
+
+public interface ICommand<TResponse> : IRequest<Result<TResponse>>
 {
 }

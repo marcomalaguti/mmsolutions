@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MMS.Erp.Domain\MMS.Erp.Domain.csproj" />
   </ItemGroup>
 

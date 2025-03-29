@@ -12,14 +12,44 @@ public static class EmployeeHandler
 
     internal static async Task<IResult> CreateEmployee([FromServices] ISender sender, CreateEmployeeRequest request)
     {
-        var command = EmployeeMapper.MapToCreateEmployeeCommand(request);
-        var result = await sender.Send(command);
-        return TypedResults.Created($"{BaseUrl}/{result}");
+        try
+        {
+            var command = EmployeeMapper.MapToCreateEmployeeCommand(request);
+            var result = await sender.Send(command);
+
+            if (result.IsSuccess)
+                return TypedResults.Created($"{BaseUrl}/{result.Value}");
+
+            return TypedResults.BadRequest(result.Error);
+        }
+        catch (FluentValidation.ValidationException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return TypedResults.UnprocessableEntity(ex.Message);
+        }
     }
 
     internal static async Task<IResult> GetAllEmployees([FromServices] IMediator mediator)
     {
-        var result = await mediator.Send(new GetAllEmployeesQuery());
-        return TypedResults.Ok(result);
+        try
+        {
+            var result = await mediator.Send(new GetAllEmployeesQuery());
+
+            if (result.IsSuccess)
+                return TypedResults.Ok(result.Value);
+
+            return TypedResults.BadRequest(result.Error);
+        }
+        catch (FluentValidation.ValidationException ex)
+        {
+            return TypedResults.BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return TypedResults.UnprocessableEntity(ex.Message);
+        }
     }
 }

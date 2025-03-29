@@ -1,10 +1,10 @@
 ﻿namespace MMS.Erp.Application.Features.Employee.Commands.CreateEmployee;
 
-using MediatR;
+using MMS.Erp.Application.Mediator.Messaging;
 
-public class CreateEmployeeCommand : IRequest<int>
+public class CreateEmployeeCommand : ICommand<int>
 {
-    public string FirstName { get; set; } 
+    public string FirstName { get; set; }
     public string LastName { get; set; }
     public string FiscalCode { get; set; }
 

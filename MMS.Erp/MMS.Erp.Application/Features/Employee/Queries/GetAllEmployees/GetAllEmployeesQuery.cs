@@ -1,8 +1,6 @@
 ﻿namespace MMS.Erp.Application.Features.Employee.Queries.GetAllEmployees;
 
-using MediatR;
 using MMS.Erp.Application.DTOs;
+using MMS.Erp.Application.Mediator.Messaging;
 
-public class GetAllEmployeesQuery : IRequest<IEnumerable<EmployeeDto>?>
-{
-}
+public sealed record GetAllEmployeesQuery : IQuery<IEnumerable<EmployeeDto>?>;
