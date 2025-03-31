@@ -1,11 +1,14 @@
 ﻿namespace MMS.Erp.Api.Mappings;
 
+using Mapster;
 using MMS.Erp.Api.Requests;
 using MMS.Erp.Application.Features.ExpenseReport.Commands.CreateExpenseReport;
-using Riok.Mapperly.Abstractions;
 
-[Mapper]
+
 public static partial class ExpenseReportMapper
 {
-    public static partial CreateExpenseReportCommand MapToCreateExpenseReportCommand(CreateExpenseReportRequest invoice);
+    public static void RegisterMappings()
+    {
+        TypeAdapterConfig<CreateExpenseReportRequest, CreateExpenseReportCommand>.NewConfig();
+    }
 }

@@ -1,12 +1,14 @@
 ﻿namespace MMS.Erp.Api.Mappings;
 
+using Mapster;
 using MMS.Erp.Api.Requests;
 using MMS.Erp.Application.Features.Employee.Commands.CreateEmployee;
-using Riok.Mapperly.Abstractions;
 
 
-[Mapper]
 public static partial class EmployeeMapper
 {
-    public static partial CreateEmployeeCommand MapToCreateEmployeeCommand(CreateEmployeeRequest invoice);
+    public static void RegisterMappings()
+    {
+        TypeAdapterConfig<CreateEmployeeRequest, CreateEmployeeCommand>.NewConfig();
+    }
 }

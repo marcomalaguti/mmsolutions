@@ -1,21 +1,26 @@
 ﻿namespace MMS.Erp.Api.Handlers;
 
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MMS.Erp.Api.Mappings;
 using MMS.Erp.Api.Requests;
+using MMS.Erp.Application.Features.ExpenseReport.Commands.CreateExpenseReport;
 using MMS.Erp.Application.Features.ExpenseReport.Queries.GetAllExpenseReports;
 
 public static class ExpenseReportHandler
 {
     const string BaseUrl = "/employee/{employeeId}/expense-report";
 
-    internal static async Task<IResult> CreateExpenseReport([FromServices] IMediator mediator, CreateExpenseReportRequest request)
+    internal static async Task<IResult> CreateExpenseReport([FromServices] ISender sender,
+                                                            [FromServices] IMapper mapper,
+                                                            [FromRoute] int employeeId,
+                                                            CreateExpenseReportRequest request,
+                                                            CancellationToken cancellationToken)
     {
         try
         {
-            var command = ExpenseReportMapper.MapToCreateExpenseReportCommand(request);
-            var result = await mediator.Send(command);            
+            var command = mapper.Map<CreateExpenseReportCommand>(request);
+            var result = await sender.Send(command, cancellationToken);
 
             if (result.IsSuccess)
                 return TypedResults.Created($"{BaseUrl}/{result.Value}");
@@ -33,11 +38,12 @@ public static class ExpenseReportHandler
         }
     }
 
-    internal static async Task<IResult> GetAllExpenseReports([FromServices] IMediator mediator)
+    internal static async Task<IResult> GetAllExpenseReports([FromServices] ISender sender,
+                                                             CancellationToken cancellationToken)
     {
         try
         {
-            var result = await mediator.Send(new GetAllExpenseReportsQuery());            
+            var result = await sender.Send(new GetAllExpenseReportsQuery(), cancellationToken);
 
             if (result.IsSuccess)
                 return TypedResults.Created($"{BaseUrl}/{result.Value}");

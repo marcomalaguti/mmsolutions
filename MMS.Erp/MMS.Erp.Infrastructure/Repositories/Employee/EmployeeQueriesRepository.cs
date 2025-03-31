@@ -17,6 +17,7 @@ internal class EmployeeQueriesRepository : GenericQueriesRepository, IEmployeeQu
         using (var connection = new SqlConnection(ErpConnectionString))
         {
             await connection.OpenAsync(cancellationToken);
+
             var query = @"
                 SELECT [Id], [FirstName], [LastName], [FiscalCode]
                 FROM [ERP].[dbo].[Employees]

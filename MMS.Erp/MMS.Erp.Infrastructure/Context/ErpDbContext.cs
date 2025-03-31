@@ -9,6 +9,7 @@ public sealed class ErpDbContext : DbContext
 {
     public ErpDbContext(DbContextOptions<ErpDbContext> options) : base(options)
     {
+
     }
 
     public DbSet<Invoice> Invoices { get; set; }

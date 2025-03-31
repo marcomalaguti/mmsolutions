@@ -1,16 +1,21 @@
-﻿using MMS.Erp.Api.Endpoints;
+﻿using Mapster;
+using MapsterMapper;
+using MMS.Erp.Api.Endpoints;
+using MMS.Erp.Api.Mappings;
 using MMS.Erp.Application;
 using MMS.Erp.Infrastructure;
 using Serilog;
 
 namespace MMS.Erp.Api.Extensions;
 
-public static class ApplicationExtensions
+internal static class ApplicationExtensions
 {
-    public static WebApplicationBuilder AddWebApplicationBuilder(this WebApplicationBuilder builder)
+    internal static WebApplicationBuilder AddWebApplicationBuilder(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddMapster();
 
         builder.Services.AddApplication();
         builder.Services.AddInfrastrucure(builder.Configuration);
@@ -23,7 +28,7 @@ public static class ApplicationExtensions
         return builder;
     }
 
-    public static WebApplication AddWebApplication(this WebApplication app)
+    internal static WebApplication AddWebApplication(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
@@ -38,5 +43,19 @@ public static class ApplicationExtensions
         app.MapEndpoints();
 
         return app;
+    }
+
+    private static IServiceCollection AddMapster(this IServiceCollection services)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        CustomerMapper.RegisterMappings();
+        EmployeeMapper.RegisterMappings();
+        ExpenseReportMapper.RegisterMappings();
+        InvoiceMapper.RegisterMappings();
+
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
+
+        return services;
     }
 }
