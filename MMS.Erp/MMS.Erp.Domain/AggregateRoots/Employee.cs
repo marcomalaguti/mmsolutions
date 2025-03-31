@@ -4,6 +4,7 @@ using MMS.Erp.Domain.Abstractions;
 using MMS.Erp.Domain.Entities;
 using MMS.Erp.Domain.Errors;
 using MMS.Erp.Domain.Primitives;
+using System;
 
 public class Employee : AggregateRoot
 {
@@ -11,6 +12,9 @@ public class Employee : AggregateRoot
     public string LastName { get; private set; } = string.Empty;
     public string FiscalCode { get; private set; } = string.Empty;
     public ICollection<ExpenseReport> ExpenseReports { get; private set; } = new List<ExpenseReport>();
+    public ICollection<PayCheck> PayChecks { get; private set; } = new List<PayCheck>();
+
+    public string FullName => $"{FirstName} {LastName}";
 
     private Employee()
     {
@@ -46,13 +50,13 @@ public class Employee : AggregateRoot
         return Result<Employee>.Success(employee);
     }
 
-    internal void SetExpenseReports(List<ExpenseReport> expenseReports)
-    {
-        ExpenseReports = expenseReports ?? new List<ExpenseReport>();
-    }
-
     public void AddNewExpenseReport()
     {
         ExpenseReports.Add(ExpenseReport.CreateExpenseReport(Id));
+    }
+
+    public void AddNewPayCheck(PayCheck payCheck)
+    {
+        PayChecks.Add(payCheck);
     }
 }

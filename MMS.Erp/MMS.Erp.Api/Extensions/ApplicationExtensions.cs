@@ -3,6 +3,7 @@ using MapsterMapper;
 using MMS.Erp.Api.Endpoints;
 using MMS.Erp.Api.Mappings;
 using MMS.Erp.Application;
+using MMS.Erp.Application.Configurations;
 using MMS.Erp.Infrastructure;
 using Serilog;
 
@@ -17,7 +18,9 @@ internal static class ApplicationExtensions
 
         builder.Services.AddMapster();
 
-        builder.Services.AddApplication();
+        builder.Services.AddConfigurations(builder.Configuration);
+
+        builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastrucure(builder.Configuration);
 
         builder.Host.UseSerilog((context, configuration) =>
@@ -25,7 +28,23 @@ internal static class ApplicationExtensions
             configuration.ReadFrom.Configuration(context.Configuration);
         });
 
+        builder.Services.AddCors(options =>
+        {
+            var origins = builder.Configuration.GetSection("ErpApiCors").Get<string[]>();
+
+            options.AddPolicy("AllowFrontEnd",
+                policy => policy.WithOrigins(origins ?? [])
+                                .AllowAnyMethod()
+                                .AllowAnyHeader());
+        });
+
         return builder;
+    }
+
+    private static void AddConfigurations(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<ExpenseReportsConfig>(configuration.GetSection("ExpenseReports"));
+        services.Configure<PayChecksConfig>(configuration.GetSection("PayChecks"));
     }
 
     internal static WebApplication AddWebApplication(this WebApplication app)
@@ -42,6 +61,8 @@ internal static class ApplicationExtensions
 
         app.MapEndpoints();
 
+        app.UseCors("AllowFrontEnd");
+
         return app;
     }
 
@@ -52,6 +73,7 @@ internal static class ApplicationExtensions
         EmployeeMapper.RegisterMappings();
         ExpenseReportMapper.RegisterMappings();
         InvoiceMapper.RegisterMappings();
+        PaycheckMapper.RegisterMappings();
 
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();

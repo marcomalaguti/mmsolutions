@@ -5,6 +5,7 @@ using System;
 
 public class ExpenseRecordModel
 {
+    public int Id { get; set; }
     public ExpenseRecordTypeEnum TypeId { get; set; }
     public string? Description { get; set; }
     public int? TraveledKm { get; set; }
@@ -15,4 +16,5 @@ public class ExpenseRecordModel
     public decimal? LumpSum { get; set; }
     public string? PathToAttachment { get; set; }
     public DateTime? Date { get; set; }
+    public decimal? Total => (TraveledKm * KmReimbursement) + Tolls + Meals + Accommodation + LumpSum;
 }

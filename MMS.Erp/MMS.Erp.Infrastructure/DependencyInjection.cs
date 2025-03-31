@@ -4,27 +4,33 @@ using Microsoft.Extensions.DependencyInjection;
 using MMS.Erp.Domain.Repositories;
 using MMS.Erp.Domain.Repositories.Customer;
 using MMS.Erp.Domain.Repositories.Employee;
+using MMS.Erp.Domain.Repositories.ExpenseReport;
 using MMS.Erp.Domain.Repositories.Invoice;
 using MMS.Erp.Infrastructure.Repositories;
 using MMS.Erp.Infrastructure.Repositories.Customer;
 using MMS.Erp.Infrastructure.Repositories.Employee;
+using MMS.Erp.Infrastructure.Repositories.ExpenseReport;
 using MMS.Erp.Infrastructure.Repositories.Invoice;
 
 namespace MMS.Erp.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastrucure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastrucure(this IServiceCollection services,
+                                                      IConfiguration configuration)
     {
         services.AddDbContext(configuration);
         services.AddRepositories();
+        services.AddInfrastructureServices();
 
         return services;
     }
 
-    private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddDbContext(this IServiceCollection services,
+                                                   IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("Connection string not found");
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? throw new ArgumentNullException("Connection string not found");
 
         services.AddDbContext<ErpDbContext>(options =>
         {
@@ -41,6 +47,13 @@ public static class DependencyInjection
         services.AddScoped<ICustomerCommandsRepository, CustomerCommandsRepository>();
         services.AddScoped<IEmployeeCommandsRepository, EmployeeCommandsRepository>();
         services.AddScoped<IEmployeeQueriesRepository, EmployeeQueriesRepository>();
+        services.AddScoped<IExpenseReportQueriesRepository, ExpenseReportQueriesRepository>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+    {
 
         return services;
     }

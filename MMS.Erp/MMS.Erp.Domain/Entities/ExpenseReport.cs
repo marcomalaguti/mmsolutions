@@ -27,8 +27,18 @@ public class ExpenseReport : Entity
         return new ExpenseReport(ExpenseReportStateEnum.Draft, DateTime.Now, employeeId);
     }
 
-    internal void SetExpenseRecords(List<ExpenseRecord> expenseRecords)
+    public void AddExpenseRecord(ExpenseRecord expenseRecord)
     {
-        ExpenseRecords = expenseRecords ?? new List<ExpenseRecord>();
+        ExpenseRecords.Add(expenseRecord);
+    }
+
+    public void RemoveExpenseRecord(ExpenseRecord expenseRecord)
+    {
+        ExpenseRecords.Remove(expenseRecord);
+    }
+
+    public ExpenseRecord? GetExpenseRecord(int expenseRecordId)
+    {
+        return ExpenseRecords.FirstOrDefault(x => x.Id == expenseRecordId);
     }
 }

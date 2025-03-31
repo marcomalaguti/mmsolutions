@@ -17,6 +17,7 @@ public sealed class ErpDbContext : DbContext
     public DbSet<ExpenseReport> ExpenseReports { get; set; }
     public DbSet<ExpenseRecord> ExpenseRecords { get; set; }
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<PayCheck> PayChecks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -68,7 +69,15 @@ public sealed class ErpDbContext : DbContext
             .HasOne(er => er.ExpenseReport)
             .WithMany(er => er.ExpenseRecords)
             .HasForeignKey(er => er.ExpenseReportId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
+
+        //PayChecks
+
+        modelBuilder.Entity<PayCheck>()
+           .HasOne<Employee>()
+           .WithMany(e => e.PayChecks)
+           .HasForeignKey(p => p.EmployeeId)
+           .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ErpDbContext).Assembly);
     }

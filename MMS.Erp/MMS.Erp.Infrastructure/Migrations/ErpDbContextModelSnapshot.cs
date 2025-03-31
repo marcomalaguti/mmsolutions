@@ -195,6 +195,42 @@ namespace MMS.Erp.Infrastructure.Migrations
                     b.ToTable("ExpenseReports");
                 });
 
+            modelBuilder.Entity("MMS.Erp.Domain.Entities.PayCheck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("F24Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSettled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaySlipPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SalaryAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("PayChecks");
+                });
+
             modelBuilder.Entity("MMS.Erp.Domain.AggregateRoots.Invoice", b =>
                 {
                     b.HasOne("MMS.Erp.Domain.AggregateRoots.Customer", "Customer")
@@ -211,7 +247,7 @@ namespace MMS.Erp.Infrastructure.Migrations
                     b.HasOne("MMS.Erp.Domain.Entities.ExpenseReport", "ExpenseReport")
                         .WithMany("ExpenseRecords")
                         .HasForeignKey("ExpenseReportId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ExpenseReport");
@@ -226,6 +262,15 @@ namespace MMS.Erp.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MMS.Erp.Domain.Entities.PayCheck", b =>
+                {
+                    b.HasOne("MMS.Erp.Domain.AggregateRoots.Employee", null)
+                        .WithMany("PayChecks")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MMS.Erp.Domain.AggregateRoots.Customer", b =>
                 {
                     b.Navigation("Invoices");
@@ -234,6 +279,8 @@ namespace MMS.Erp.Infrastructure.Migrations
             modelBuilder.Entity("MMS.Erp.Domain.AggregateRoots.Employee", b =>
                 {
                     b.Navigation("ExpenseReports");
+
+                    b.Navigation("PayChecks");
                 });
 
             modelBuilder.Entity("MMS.Erp.Domain.Entities.ExpenseReport", b =>

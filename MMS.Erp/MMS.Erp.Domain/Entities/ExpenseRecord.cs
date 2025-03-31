@@ -1,5 +1,8 @@
 ﻿namespace MMS.Erp.Domain.Entities;
+
+using MMS.Erp.Domain.Abstractions;
 using MMS.Erp.Domain.Enums;
+using MMS.Erp.Domain.Errors;
 using MMS.Erp.Domain.Primitives;
 
 public class ExpenseRecord : Entity
@@ -59,8 +62,7 @@ public class ExpenseRecord : Entity
                           decimal? accommodation,
                           decimal? lumpSum,
                           string? pathToAttachment,
-                          DateTime date,
-                          ExpenseReport expenseReport)
+                          int expenseReportId)
     {
         TypeId = typeId;
         Description = description;
@@ -71,41 +73,38 @@ public class ExpenseRecord : Entity
         Accommodation = accommodation;
         LumpSum = lumpSum;
         PathToAttachment = pathToAttachment;
-        Date = date;
-        ExpenseReport = expenseReport ?? throw new ArgumentNullException(nameof(expenseReport));
-        ExpenseReportId = expenseReport.Id;
+        Date = DateTime.Now;
+        ExpenseReportId = expenseReportId;
     }
 
-    public static ExpenseRecord CreateExpenseRecord(ExpenseRecordTypeEnum typeId,
-                                                    string description,
-                                                    int? traveledKm,
-                                                    decimal? kmReimbursement,
-                                                    decimal? tolls,
-                                                    decimal? meals,
-                                                    decimal? accommodation,
-                                                    decimal? lumpSum,
-                                                    string? pathToAttachment,
-                                                    DateTime date,
-                                                    ExpenseReport expenseReport)
+    public static Result<ExpenseRecord> Create(ExpenseRecordTypeEnum typeId,
+                                               string description,
+                                               int? traveledKm,
+                                               decimal? kmReimbursement,
+                                               decimal? tolls,
+                                               decimal? meals,
+                                               decimal? accommodation,
+                                               decimal? lumpSum,
+                                               string? pathToAttachment,
+                                               int expenseReportId)
     {
-        if (expenseReport == null)
-            throw new ArgumentNullException(nameof(expenseReport));
+        if (expenseReportId == 0)
+            return Result<ExpenseRecord>.Failure(ExpenseReportErrors.NotFound);
 
-        return new ExpenseRecord(typeId,
-                                 description,
-                                 traveledKm,
-                                 kmReimbursement,
-                                 tolls,
-                                 meals,
-                                 accommodation,
-                                 lumpSum,
-                                 pathToAttachment,
-                                 date,
-                                 expenseReport);
-    }
+        if(string.IsNullOrEmpty(description))
+            return Result<ExpenseRecord>.Failure(ExpenseReportErrors.InvalidRecordDescription);
 
-    internal void SetExpenseReport(ExpenseReport expenseReport)
-    {
-        ExpenseReport = expenseReport ?? throw new ArgumentNullException(nameof(expenseReport));
+        var expenseRecord = new ExpenseRecord(typeId,
+                                              description,
+                                              traveledKm,
+                                              kmReimbursement,
+                                              tolls,
+                                              meals,
+                                              accommodation,
+                                              lumpSum,
+                                              pathToAttachment,
+                                              expenseReportId);
+
+        return Result<ExpenseRecord>.Success(expenseRecord);
     }
 }

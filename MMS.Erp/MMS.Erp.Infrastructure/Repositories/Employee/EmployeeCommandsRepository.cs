@@ -2,9 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using MMS.Erp.Domain.AggregateRoots;
-using MMS.Erp.Domain.QueryModels.Employee;
 using MMS.Erp.Domain.Repositories.Employee;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 internal class EmployeeCommandsRepository : GenericCommandRepository<Employee>, IEmployeeCommandsRepository
@@ -12,5 +10,13 @@ internal class EmployeeCommandsRepository : GenericCommandRepository<Employee>, 
     public EmployeeCommandsRepository(ErpDbContext context) : base(context)
     {
 
+    }
+
+    public override async Task<Employee?> GetByIdAsync(int id)
+    {
+        return await _dbSet
+            .Include(x => x.ExpenseReports)
+            .ThenInclude(x => x.ExpenseRecords)
+            .FirstOrDefaultAsync(x => x.Id == id);   
     }
 }

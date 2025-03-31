@@ -11,5 +11,7 @@ public static class Endpoints
         route.MapCustomerEndpoints();
 
         route.MapEmployeeEndpoints();
+
+        route.MapExpenseReportEndpoints();
     }
 }

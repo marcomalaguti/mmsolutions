@@ -14,23 +14,10 @@ public class ExpenseRecordDto
     public decimal? LumpSum { get; set; }
     public string? PathToAttachment { get; set; }
     public DateTime Date { get; set; }
-
-
-    public ExpenseRecordDto() { }
-
-
-    public ExpenseRecordDto(int id, ExpenseRecordTypeEnum typeId, string description, int? traveledKm, decimal? kmReimbursement, decimal? tolls, decimal? meals, decimal? accommodation, decimal? lumpSum, string? pathToAttachment, DateTime date)
-    {
-        Id = id;
-        TypeId = typeId;
-        Description = description;
-        TraveledKm = traveledKm;
-        KmReimbursement = kmReimbursement;
-        Tolls = tolls;
-        Meals = meals;
-        Accommodation = accommodation;
-        LumpSum = lumpSum;
-        PathToAttachment = pathToAttachment;
-        Date = date;
-    }
+    public decimal? Total => 
+        ((TraveledKm ?? 0) * (KmReimbursement ?? 0)) +
+        (Tolls ?? 0) +
+        (Meals ?? 0) +
+        (Accommodation ?? 0) +
+        (LumpSum ?? 0);
 }
