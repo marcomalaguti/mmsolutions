@@ -26,4 +26,56 @@ internal class EmployeeQueriesRepository : GenericQueriesRepository, IEmployeeQu
             return await connection.QueryAsync<EmployeeModel>(query, cancellationToken);
         }
     }
+
+    public async Task<IEnumerable<ExpenseRecordModel>> GetExpenseRecordsByReportIdAsync(int expenseReportId,
+                                                                                        CancellationToken cancellationToken)
+    {
+        using (var connection = new SqlConnection(ErpConnectionString))
+        {
+            await connection.OpenAsync(cancellationToken);
+
+            var query = @"
+              SELECT [Id]
+                  ,[TypeId]
+                  ,[Description]
+                  ,[TraveledKm]
+                  ,[KmReimbursement]
+                  ,[Tolls]
+                  ,[Meals]
+                  ,[Accommodation]
+                  ,[LumpSum]
+                  ,[PathToAttachment]
+                  ,[Date]
+                  ,[ExpenseReportId]
+              FROM [ERP].[dbo].[ExpenseRecords]
+              WHERE [ExpenseReportId] = @expenseReportId
+            ";
+
+            var parameters = new { expenseReportId };
+
+            return await connection.QueryAsync<ExpenseRecordModel>(query, parameters);
+        }
+    }
+
+    public async Task<IEnumerable<ExpenseReportModel>> GetExpenseReportsByEmployeeIdAsync(int employeeId,
+                                                                                          CancellationToken cancellationToken)
+    {
+        using (var connection = new SqlConnection(ErpConnectionString))
+        {
+            await connection.OpenAsync(cancellationToken);
+
+            var query = @"
+              SELECT rp.[Id] as Id
+                    ,rp.[StateId] as StateId
+                    ,rp.[Date] as Date
+                    ,rp.[EmployeeId] as EmployeeId
+              FROM [ERP].[dbo].[ExpenseReports] rp
+              WHERE rp.[EmployeeId] = @employeeId
+            ";
+
+            var parameters = new { employeeId };
+
+            return await connection.QueryAsync<ExpenseReportModel>(query, parameters);
+        }
+    }
 }

@@ -9,7 +9,7 @@ using MMS.Erp.Application.Features.Invoice.Queries.GetAllInvoices;
 
 public static class InvoiceHandler
 {
-    const string BaseUrl = "/invoices";
+    public static string BaseUrl = "/invoices";
 
     internal static async Task<IResult> CreateInvoice([FromServices] ISender sender,
                                                       [FromServices] IMapper mapper,

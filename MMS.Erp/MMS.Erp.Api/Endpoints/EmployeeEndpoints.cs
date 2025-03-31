@@ -18,7 +18,7 @@ internal static class EmployeeEndpoints
     {
         var expenseReportGroup = group.MapGroup("/{employeeId}/expense-report");
 
-        expenseReportGroup.MapGet("/", ExpenseReportHandler.GetAllExpenseReports);
+        expenseReportGroup.MapGet("/", ExpenseReportHandler.GetByEmployeeId);
         expenseReportGroup.MapPost("/", ExpenseReportHandler.CreateExpenseReport);
     }
 }

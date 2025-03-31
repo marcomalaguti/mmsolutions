@@ -9,6 +9,8 @@ public static partial class ExpenseReportMapper
 {
     public static void RegisterMappings()
     {
-        TypeAdapterConfig<CreateExpenseReportRequest, CreateExpenseReportCommand>.NewConfig();
+        TypeAdapterConfig<CreateExpenseReportRequest, CreateExpenseReportCommand>
+            .NewConfig()
+            .Map(d => d.EmployeeId, src => MapContext.Current!.Parameters["EmployeeId"]);
     }
 }

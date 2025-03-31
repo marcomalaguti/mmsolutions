@@ -5,11 +5,11 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MMS.Erp.Api.Requests;
 using MMS.Erp.Application.Features.ExpenseReport.Commands.CreateExpenseReport;
-using MMS.Erp.Application.Features.ExpenseReport.Queries.GetAllExpenseReports;
+using MMS.Erp.Application.Features.ExpenseReport.Queries.GetByEmployeeId;
 
 public static class ExpenseReportHandler
 {
-    const string BaseUrl = "/employee/{employeeId}/expense-report";
+    public static string BaseUrl = "/expense-report";
 
     internal static async Task<IResult> CreateExpenseReport([FromServices] ISender sender,
                                                             [FromServices] IMapper mapper,
@@ -19,11 +19,18 @@ public static class ExpenseReportHandler
     {
         try
         {
-            var command = mapper.Map<CreateExpenseReportCommand>(request);
+            var command = mapper
+                .From(request)
+                .AddParameters("EmployeeId", employeeId)
+                .AdaptToType<CreateExpenseReportCommand>();
+
             var result = await sender.Send(command, cancellationToken);
 
             if (result.IsSuccess)
-                return TypedResults.Created($"{BaseUrl}/{result.Value}");
+            {
+                var returnUrl = $"{EmployeeHandler.BaseUrl}/{employeeId}/{BaseUrl}/{result.Value}";
+                return TypedResults.Created(returnUrl);
+            }
 
             return TypedResults.BadRequest(result.Error);
 
@@ -38,15 +45,16 @@ public static class ExpenseReportHandler
         }
     }
 
-    internal static async Task<IResult> GetAllExpenseReports([FromServices] ISender sender,
-                                                             CancellationToken cancellationToken)
+    internal static async Task<IResult> GetByEmployeeId([FromServices] ISender sender,
+                                                        [FromRoute] int employeeId,
+                                                        CancellationToken cancellationToken)
     {
         try
         {
-            var result = await sender.Send(new GetAllExpenseReportsQuery(), cancellationToken);
+            var result = await sender.Send(new GetByEmployeeIdQuery(employeeId), cancellationToken);
 
             if (result.IsSuccess)
-                return TypedResults.Created($"{BaseUrl}/{result.Value}");
+                return TypedResults.Ok(result.Value);
 
             return TypedResults.BadRequest(result.Error);
         }

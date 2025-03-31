@@ -9,7 +9,7 @@ using MMS.Erp.Application.Features.Employee.Queries.GetAllEmployees;
 
 public static class EmployeeHandler
 {
-    const string BaseUrl = "/employee";
+    public static string BaseUrl = "/employee";
 
     internal static async Task<IResult> CreateEmployee([FromServices] ISender sender,
                                                        [FromServices] IMapper mapper,

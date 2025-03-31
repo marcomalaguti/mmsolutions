@@ -9,8 +9,7 @@ using MMS.Erp.Application.Features.Invoice.Queries.GetAllInvoices;
 
 public static class CustomerHandler
 {
-    const string BaseUrl = "/customers";
-
+    public static string BaseUrl = "/customers";
     internal static async Task<IResult> CreateCustomer([FromServices] ISender sender,
                                                        [FromServices] IMapper mapper,
                                                        CreateCustomerRequest request,
