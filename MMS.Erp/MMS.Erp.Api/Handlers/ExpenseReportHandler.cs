@@ -8,6 +8,7 @@ using MMS.Erp.Application.DTOs;
 using MMS.Erp.Application.Features.ExpenseReport.Commands.CreateExpenseRecord;
 using MMS.Erp.Application.Features.ExpenseReport.Commands.CreateExpenseReport;
 using MMS.Erp.Application.Features.ExpenseReport.Commands.DeleteExpenseRecord;
+using MMS.Erp.Application.Features.ExpenseReport.Commands.SetStateReport;
 using MMS.Erp.Application.Features.ExpenseReport.Queries.DownloadExpenseReport;
 using MMS.Erp.Application.Features.ExpenseReport.Queries.GetAll;
 using MMS.Erp.Application.Features.ExpenseReport.Queries.GetByEmployeeId;
@@ -218,19 +219,20 @@ public static class ExpenseReportHandler
         }
     }
 
-    internal static async Task<IResult> SubmitExportReport([FromServices] ISender sender,
+    internal static async Task<IResult> SetStateExportReport([FromServices] ISender sender,
                                                 [FromRoute] int expenseReportId,
                                                 [FromRoute] int employeeId,
+                                                SetStateExpenseReportRequest request,
                                                 CancellationToken cancellationToken)
     {
         try
         {
-            var result = await sender.Send(new SubmitReportCommand(expenseReportId), cancellationToken);
+            var result = await sender.Send(new SetStateReportCommand(employeeId, expenseReportId, request.StateId), cancellationToken);
 
             if (result.IsSuccess)
-                return TypedResults.Ok(result.Value);
+                return TypedResults.Ok();
 
-            return TypedResults.BadRequest(result.Error);
+            return TypedResults.BadRequest();
         }
         catch (FluentValidation.ValidationException ex)
         {

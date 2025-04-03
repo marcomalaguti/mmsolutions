@@ -78,8 +78,10 @@ internal class ExpenseReportService(IAzureBlobStorageService azureBlobStorageSer
 
         if (travels.Any())
         {
-            worksheet.Cell(currentRow, 3).Value = "TRASFERTE:";
-            worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+            worksheet.Cell(currentRow, 1).Value = "TRASFERTE:";
+            worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+            currentRow += 2;
 
             var headers = new List<string>
             {
@@ -134,8 +136,10 @@ internal class ExpenseReportService(IAzureBlobStorageService azureBlobStorageSer
 
         if (genericRefunds.Any())
         {
-            worksheet.Cell(currentRow, 3).Value = "RIMBORSO PRANZI:";
-            worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
+            worksheet.Cell(currentRow, 1).Value = "RIMBORSI:";
+            worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
+
+            currentRow += 2;
 
             var headers = new List<string>
             {

@@ -9,6 +9,7 @@ public class ExpenseReportDto
     public ExpenseReportStateEnum StateId { get; set; }
     public DateTime Date { get; set; }
     public int EmployeeId { get; set; }
+    public string? EmployeeName { get; set; }
     public IEnumerable<ExpenseRecordDto> Records { get; set; } = new List<ExpenseRecordDto>();
 
     public string Label => $"{Id} - {Date.ToString("MMMM yyyy")}";

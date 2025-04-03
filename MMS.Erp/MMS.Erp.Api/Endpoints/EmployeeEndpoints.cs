@@ -30,7 +30,7 @@ internal static class EmployeeEndpoints
             .Accepts<CreateExpenseRecordRequest>("multipart/form-data")
             .DisableAntiforgery();
 
-        expenseReportGroup.MapPost("/{expenseReportId}/submit", ExpenseReportHandler.SubmitExportReport);
+        expenseReportGroup.MapPost("/{expenseReportId}/set-state", ExpenseReportHandler.SetStateExportReport);
 
         expenseReportGroup.MapDelete("/{expenseReportId}/expense-record/{expenseRecordId}", ExpenseReportHandler.DeleteExpenseRecord);
 

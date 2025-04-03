@@ -24,7 +24,10 @@ internal class ExpenseReportQueriesRepository : GenericQueriesRepository, IExpen
                     ,rp.[StateId] as StateId
                     ,rp.[Date] as Date
                     ,rp.[EmployeeId] as EmployeeId
+              	    ,emp.FirstName as FirstName
+              	    ,emp.LastName as LastName
               FROM [ERP].[dbo].[ExpenseReports] rp
+              JOIN [ERP].[dbo].[Employees] emp on rp.EmployeeId = emp.Id
             ";
 
             return await connection.QueryAsync<ExpenseReportModel>(query, cancellationToken);
@@ -53,6 +56,7 @@ internal class ExpenseReportQueriesRepository : GenericQueriesRepository, IExpen
                   ,[ExpenseReportId]
               FROM [ERP].[dbo].[ExpenseRecords]
               WHERE [ExpenseReportId] = @expenseReportId
+              ORDER BY [Date]
             ";
 
             var parameters = new { expenseReportId };

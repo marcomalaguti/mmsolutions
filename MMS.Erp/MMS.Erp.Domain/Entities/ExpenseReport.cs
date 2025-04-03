@@ -41,4 +41,9 @@ public class ExpenseReport : Entity
     {
         return ExpenseRecords.FirstOrDefault(x => x.Id == expenseRecordId);
     }
+
+    public void SetState(ExpenseReportStateEnum newReportState)
+    {
+        StateId = newReportState;
+    }
 }
