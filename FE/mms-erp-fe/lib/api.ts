@@ -7,7 +7,7 @@ export async function fetchData<T>(path: string, options?: RequestInit): Promise
     return res.json();
 }
 
-export async function donwloadFile(path: string) {
+export async function donwloadFile(path: string, fileName: string): Promise<void> {
     const uri = `${API_BASE_URL}${path}`;
     const res = await fetch(uri, {
         method: "GET"
@@ -21,7 +21,7 @@ export async function donwloadFile(path: string) {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "report.xlsx";
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -29,6 +29,23 @@ export async function donwloadFile(path: string) {
 }
 
 export async function postData<T>(path: string, body: any): Promise<T> {
+    const url = `${API_BASE_URL}${path}`;
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json", // Ensure JSON format
+        },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error(`Errore API: ${res.status}`);
+
+    const responseData: T = await res.json();  // Ensure it's parsed and mapped to type T
+    console.log("Response:", responseData);
+
+    return responseData;
+}
+
+export async function postFormData<T>(path: string, body: any): Promise<T> {
     const url = `${API_BASE_URL}${path}`;
     const res = await fetch(url, {
         method: "POST",

@@ -8,5 +8,6 @@ export interface ExpenseReportDto {
     stateId: number;
     stateDescription: string;
     employeeId: number;
+    employeeName: string;
     records: ExpenseRecordDto[]; 
 }

@@ -6,6 +6,7 @@ export interface ExpenseRecordDto {
   description: string;
   traveledKm?: number | null;
   kmReimbursement?: number | null;
+  totKmReimbursement?: number | null;
   tolls?: number | null;
   meals?: number | null;
   accommodation?: number | null;

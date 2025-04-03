@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { ExpenseReportDto } from "@/dtos/ExpenseReportDto";
-import { createExpenseRecord, getExpenseReport, getExpenseReports, deleteExpenseRecord, downloadExpenseReportExcel } from "@/services/expenseReportService";
+import { createExpenseRecord,
+     getExpenseReport,
+      getExpenseReports,
+       deleteExpenseRecord,
+        downloadExpenseReportExcel ,
+        setReportState} from "@/services/expenseReportService";
 import { useParams } from "next/navigation";
 import { ExpenseRecordDto } from "@/dtos/ExpenseRecordDto";
 
@@ -39,29 +44,37 @@ export function useExpenseReportDetails() {
         file: null,
     });
 
-
     const expenseTypes: Record<number, string> = {
         1: "Trasferta",
         2: "Rimborso Generico"
     };
-
 
     const handleFileChange = (e: any) => {
         setNewRecord({ ...newRecord, file: e.target.files[0] });
     };
 
     async function handleDelete(recordId: number) {
-        
+
         await deleteExpenseRecord(recordId, expenseReport!.id, expenseReport!.employeeId);
-        
+
         setExpenseReport({
             ...expenseReport!,
             records: expenseReport!.records.filter(r => r.id !== recordId),
         });
     }
 
-    async function downloadExcel(reportId: number) {        
-        await downloadExpenseReportExcel(reportId);        
+    async function downloadExcel(reportId: number, label: string, empployeeName: string) {
+        const fileName = `ExpenseReport_${label}_${empployeeName}.xlsx`;
+        await downloadExpenseReportExcel(reportId, fileName);
+    }
+
+    async function submitReport(reportId: number, employeeId: number) {  
+        const submitStateId = 2;      
+        await setReportState(reportId, employeeId, submitStateId);        
+        setExpenseReport({
+            ...expenseReport!,
+            stateId: submitStateId
+        });
     }
 
     async function handleAddRecord() {
@@ -102,5 +115,17 @@ export function useExpenseReportDetails() {
             .finally(() => setLoading(false));
     }, []);
 
-    return { expenseReport, setExpenseReport, reportLoading, expenseTypes, setNewRecord, newRecord, handleDelete, handleAddRecord, handleFileChange, downloadExcel };
+    return {
+        expenseReport,
+        expenseTypes,
+        newRecord,
+        reportLoading,
+        setExpenseReport,
+        setNewRecord,
+        handleDelete,
+        handleAddRecord,
+        handleFileChange,
+        downloadExcel,
+        submitReport
+    };
 }

@@ -31,14 +31,14 @@ export default function Page() {
               <TableHead>Employee</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>State</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {expenseReports.map((expenseReport, index) => (
               <TableRow key={expenseReport.id || index}>
                 <TableCell>{expenseReport.label}</TableCell>
-                <TableCell>{expenseReport.employeeId}</TableCell>
+                <TableCell>{expenseReport.employeeName}</TableCell>
                 <TableCell>€ {expenseReport.total}</TableCell>
                 <TableCell>{expenseReport.stateDescription}</TableCell>
                 <TableCell>

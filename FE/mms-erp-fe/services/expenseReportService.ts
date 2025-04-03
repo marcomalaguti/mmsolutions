@@ -2,7 +2,7 @@
 
 import { ExpenseRecordDto } from "@/dtos/ExpenseRecordDto";
 import { ExpenseReportDto } from "@/dtos/ExpenseReportDto";
-import { deleteData, fetchData, postData, donwloadFile } from "@/lib/api";
+import { deleteData, fetchData, postFormData, donwloadFile, postData } from "@/lib/api";
 
 export async function getExpenseReports() {
     try {
@@ -24,9 +24,9 @@ export async function getExpenseReport(expenseReportId: number) {
     }
 }
 
-export async function downloadExpenseReportExcel(expenseReportId: number) {
+export async function downloadExpenseReportExcel(expenseReportId: number, fileName: string) {
     try {
-        const report = await donwloadFile("/expense-report/" + expenseReportId + "/download");
+        const report = await donwloadFile("/expense-report/" + expenseReportId + "/download", fileName);
         return report;
     }
     catch (error) {
@@ -37,6 +37,17 @@ export async function downloadExpenseReportExcel(expenseReportId: number) {
 export async function deleteExpenseRecord(recordId: number, reportId: number, employeeId: number) {
     try {
         await deleteData("/employee/" + employeeId + "/expense-report/" + reportId + "/expense-record/" + recordId);
+    }
+    catch (error) {
+        console.log("Error fetching reports:", error);
+    }
+}
+
+
+export async function setReportState(reportId: number, employeeId: number, stateId: number) {
+    try {
+        const report = await postData<ExpenseReportDto>("/employee/" + employeeId + "/expense-report/" + reportId + "/set-state", { stateId });
+        return report;
     }
     catch (error) {
         console.log("Error fetching reports:", error);
@@ -95,7 +106,7 @@ export async function createExpenseRecord(employeeId: number, expeseReportId: nu
 
         console.log("FormData:", formData);
 
-        var report = await postData<ExpenseRecordDto>("/employee/" + employeeId + "/expense-report/" + expeseReportId, formData);
+        var report = await postFormData<ExpenseRecordDto>("/employee/" + employeeId + "/expense-report/" + expeseReportId, formData);
 
         return report as ExpenseRecordDto;
     }
