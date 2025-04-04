@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEmployees } from "@/services/employeeService";
-import { EmployeeDto } from "@/dtos/Employee";
+import { EmployeeDto } from "@/dtos/EmployeeDto";
 
 export function useEmployees() {
     const [employees, setEmployees] = useState<EmployeeDto[]>([]);

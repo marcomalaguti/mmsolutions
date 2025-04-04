@@ -2,7 +2,7 @@
 
 import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { useExpenseReportDetails } from "@/hooks/useExpenseReports";
+import { useExpenseReportDetails } from "@/hooks/useExpenseReportDetails";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

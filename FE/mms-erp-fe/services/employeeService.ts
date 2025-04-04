@@ -1,6 +1,6 @@
 
 
-import { EmployeeDto } from "@/dtos/Employee";
+import { EmployeeDto } from "@/dtos/EmployeeDto";
 import { fetchData } from "@/lib/api";
 
 export async function getEmployees() {

@@ -19,12 +19,14 @@ export default function Page() {
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">Expense Reports</h1>
 
+        <Link href={`/expense-reports/create`} passHref>
         <Button variant="outline" size="sm">
           <IconPlus />
           <span className="hidden lg:inline">Add Expense Report</span>
         </Button>
+        </Link>
 
-        <Table>
+        <Table className="mt-4">
           <TableHeader>
             <TableRow>
               <TableHead>Label</TableHead>

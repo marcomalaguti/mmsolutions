@@ -36,7 +36,7 @@ export default function Page() {
             {employees.map((employee, index) => (
               <TableRow key={employee.id || index}>
                 <TableCell>{employee.id}</TableCell>
-                <TableCell>{employee.firstName} {employee.lastName}</TableCell>
+                <TableCell>{employee.fullName}</TableCell>
                 <TableCell>{employee.email}</TableCell>
                 <TableCell>{employee.fiscalCode}</TableCell>
               </TableRow>

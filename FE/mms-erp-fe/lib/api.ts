@@ -30,6 +30,7 @@ export async function donwloadFile(path: string, fileName: string): Promise<void
 
 export async function postData<T>(path: string, body: any): Promise<T> {
     const url = `${API_BASE_URL}${path}`;
+    console.log("POST URL:", url);
     const res = await fetch(url, {
         method: "POST",
         headers: {
@@ -39,9 +40,10 @@ export async function postData<T>(path: string, body: any): Promise<T> {
     });
     if (!res.ok) throw new Error(`Errore API: ${res.status}`);
 
+console.log("RES Body:", res);  
+
     const responseData: T = await res.json();  // Ensure it's parsed and mapped to type T
     console.log("Response:", responseData);
-
     return responseData;
 }
 

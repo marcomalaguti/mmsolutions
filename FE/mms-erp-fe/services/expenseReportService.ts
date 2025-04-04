@@ -3,6 +3,7 @@
 import { ExpenseRecordDto } from "@/dtos/ExpenseRecordDto";
 import { ExpenseReportDto } from "@/dtos/ExpenseReportDto";
 import { deleteData, fetchData, postFormData, donwloadFile, postData } from "@/lib/api";
+// import { useRouter } from "next/navigation";
 
 export async function getExpenseReports() {
     try {
@@ -18,6 +19,15 @@ export async function getExpenseReport(expenseReportId: number) {
     try {
         const report = await fetchData<ExpenseReportDto>("/expense-report/" + expenseReportId);
         return report;
+    }
+    catch (error) {
+        console.log("Error fetching reports:", error);
+    }
+}
+
+export async function createExpenseReport(employeeId: number) {
+    try {
+        return await postData<number>("/employee/" + employeeId + "/expense-report", { method: "POST" });
     }
     catch (error) {
         console.log("Error fetching reports:", error);
