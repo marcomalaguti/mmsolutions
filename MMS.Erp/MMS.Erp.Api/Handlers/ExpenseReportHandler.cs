@@ -77,7 +77,7 @@ public static class ExpenseReportHandler
             if (result.IsSuccess)
             {
                 var returnUrl = $"{EmployeeHandler.BaseUrl}/{employeeId}/{BaseUrl}/{result.Value}";
-                return TypedResults.Created(returnUrl);
+                return TypedResults.Created(returnUrl, result.Value);
             }
 
             return TypedResults.BadRequest(result.Error);
