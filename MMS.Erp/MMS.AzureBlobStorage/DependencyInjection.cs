@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<IAzureBlobStorageService>(provider =>
         {
-            var blobServiceClient = new BlobServiceClient(configuration.GetConnectionString("saweerpprod"));
+            var blobServiceClient = new BlobServiceClient(configuration.GetConnectionString("ErpStorageAccount"));
             return new AzureBlobStorageService(blobServiceClient);
         });
 

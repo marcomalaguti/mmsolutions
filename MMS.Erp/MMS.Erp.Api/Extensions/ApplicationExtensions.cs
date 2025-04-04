@@ -14,18 +14,12 @@ internal static class ApplicationExtensions
 {
     internal static WebApplicationBuilder AddWebApplicationBuilder(this WebApplicationBuilder builder)
     {
-        builder.Configuration.AddAzureAppConfiguration(options =>
-        {
-            options.Connect(builder.Configuration["ConnectionStrings:ErpAppConfiguration"])
-                   .Select(KeyFilter.Any);
-        });
+        builder.AddErpConfiguration();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddMapster();
-
-        builder.Services.AddConfigurations(builder.Configuration);
 
         builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastrucure(builder.Configuration);
@@ -48,10 +42,22 @@ internal static class ApplicationExtensions
         return builder;
     }
 
-    private static void AddConfigurations(this IServiceCollection services, IConfiguration configuration)
+    private static WebApplicationBuilder AddErpConfiguration(this WebApplicationBuilder builder)
     {
-        services.Configure<ExpenseReportsConfig>(configuration.GetSection("ExpenseReports"));
-        services.Configure<PayChecksConfig>(configuration.GetSection("PayChecks"));
+        var azureAppConfig = Environment.GetEnvironmentVariable("ErpAppConfiguration")
+                             ?? builder.Configuration["ConnectionStrings:ErpAppConfiguration"]
+                             ?? throw new ArgumentNullException("ErpAppConfiguration");
+
+        builder.Configuration.AddAzureAppConfiguration(options =>
+        {
+            options.Connect(builder.Configuration["ConnectionStrings:ErpAppConfiguration"])
+                   .Select(KeyFilter.Any);
+        });
+
+        builder.Services.Configure<ExpenseReportsConfig>(builder.Configuration.GetSection("ExpenseReports"));
+        builder.Services.Configure<PayChecksConfig>(builder.Configuration.GetSection("PayChecks"));
+
+        return builder;
     }
 
     internal static WebApplication AddWebApplication(this WebApplication app)

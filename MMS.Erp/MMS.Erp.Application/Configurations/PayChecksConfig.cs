@@ -2,6 +2,5 @@
 
 public class PayChecksConfig
 {
-    public string StorageAccount { get; set; }
     public string ContainerName { get; set; }
 }
