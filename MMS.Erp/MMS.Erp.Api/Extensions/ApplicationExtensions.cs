@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MapsterMapper;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using MMS.Erp.Api.Endpoints;
 using MMS.Erp.Api.Mappings;
 using MMS.Erp.Application;
@@ -13,6 +14,12 @@ internal static class ApplicationExtensions
 {
     internal static WebApplicationBuilder AddWebApplicationBuilder(this WebApplicationBuilder builder)
     {
+        builder.Configuration.AddAzureAppConfiguration(options =>
+        {
+            options.Connect(builder.Configuration["ConnectionStrings:ErpAppConfiguration"])
+                   .Select(KeyFilter.Any);
+        });
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

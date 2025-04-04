@@ -1,3 +1,12 @@
 ﻿namespace MMS.Erp.Application.DTOs;
 
-public record EmployeeDto(int Id, string FirstName, string LastName, string FiscalCode);
+public class EmployeeDto
+{
+    public int Id { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? FiscalCode { get; set; }
+
+    public string FullName => $"{FirstName} {LastName}";
+
+};
