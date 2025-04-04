@@ -399,3 +399,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /MMS.Erp/MMS.Erp.Api/appsettings.json
+/MMS.Erp/MMS.Erp.Api/appsettings.Development.json
